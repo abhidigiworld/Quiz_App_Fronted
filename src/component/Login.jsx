@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,7 +11,6 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Validation
     if (!email || !password) {
       setError('Please fill in all fields.');
       return;
@@ -25,16 +24,21 @@ const Login = () => {
     setError('');
 
     try {
-      console.log(email,password);
       const response = await axios.post('http://localhost:2523/login', {
         email,
         password,
       });
 
       if (response.status === 200) {
-        console.log('Login successful:', response.data);
-        alert("Login");
-        // navigate('/dashboard'); 
+        const { token, user } = response.data;
+        if (user.userType === 'Admin') {
+          navigate('/admin');
+        } else if (user.userType === 'User') {
+          navigate('/student');
+        } else {
+          alert('Unidentified user detected');
+          navigate('/login');
+        }
       }
     } catch (err) {
       console.error('Error during login:', err);
@@ -77,6 +81,15 @@ const Login = () => {
             Login
           </button>
         </form>
+        <div className="mt-5 text-center">
+          <Link
+            to="/signup"
+            className="text-blue-500 hover:text-blue-700 font-semibold underline"
+          >
+            Don't have an account? Sign up
+          </Link>
+        </div>
+
       </div>
     </div>
   );

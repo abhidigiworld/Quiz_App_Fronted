@@ -6,6 +6,10 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './index.css'
 import Login from './component/Login.jsx'
 import Signup from './component/Signup.jsx'
+import AdminPage from './component/AdminPage.jsx'
+import SetQuestionPaper from './component/SetQuestionPaper.jsx'
+import StudentDashboard from './component/StudentDashboard.jsx'
+import TestPage from './component/TestPage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +23,20 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <Signup/>
+  },
+  {
+    path: '/admin',
+    element: <AdminPage/>
+  },
+  {
+    path: 'setquestion',
+    element: <SetQuestionPaper/>
+  },{
+    path: '/student',
+    element: <StudentDashboard/>
+  },{
+    path: '/test',
+    element: <TestPage/>
   }
 ])
 
