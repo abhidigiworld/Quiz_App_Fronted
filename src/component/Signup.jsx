@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -6,34 +8,33 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-
-    // Validation
-    if (!name || !email || !password || !confirmPassword) {
-      setError('Please fill in all fields.');
-      return;
-    }
-
-    if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      setError('Invalid email address.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.');
-      return;
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long.');
-      return;
-    }
-
     setError('');
-    // Proceed with signup
-    console.log('Signing up:', { name, email, password });
+    console.log(name,email,password,confirmPassword);
+
+    try {
+      const response = await axios.post('http://localhost:2523/signup', {
+        name,
+        email,
+        password,
+        confirmPassword,
+      });
+
+      if (response.status === 201) {
+        alert("SignUp successful");
+        navigate('/login');
+      }
+    } catch (err) {
+      if (err.response && err.response.data) {
+        setError(err.response.data);
+      } else {
+        setError('An error occurred. Please try again.');
+      }
+      console.error('Error during signup:', err);
+    }
   };
 
   return (
@@ -49,6 +50,7 @@ const Signup = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+              required
             />
           </div>
           <div className="mb-4">
@@ -58,6 +60,7 @@ const Signup = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+              required
             />
           </div>
           <div className="mb-4">
@@ -67,6 +70,7 @@ const Signup = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+              required
             />
           </div>
           <div className="mb-6">
@@ -76,6 +80,7 @@ const Signup = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+              required
             />
           </div>
           <button
