@@ -15,7 +15,7 @@ function AdminPage() {
         // Fetch users and tests data
         const fetchUsers = async () => {
             try {
-                const response = await axios.get('http://localhost:2523/api/users');
+                const response = await axios.get('https://backend-quiz-app-qpdg.onrender.com/api/users');
                 setUsers(response.data);
             } catch (error) {
                 console.error('Error fetching users:', error);
@@ -24,7 +24,7 @@ function AdminPage() {
 
         const fetchTests = async () => {
             try {
-                const response = await axios.get('http://localhost:2523/api/tests');
+                const response = await axios.get('https://backend-quiz-app-qpdg.onrender.com/api/tests');
                 setTests(response.data);
             } catch (error) {
                 console.error('Error fetching tests:', error);
@@ -57,7 +57,7 @@ function AdminPage() {
     const handleSaveUpdate = async () => {
         if (window.confirm('Are you sure you want to update this user?')) {
             try {
-                await axios.put(`http://localhost:2523/api/users/${editUserId}`, {
+                await axios.put(`https://backend-quiz-app-qpdg.onrender.com/api/users/${editUserId}`, {
                     name: updatedUser.name,
                     email: updatedUser.email,
                     userType: updatedUser.userType
@@ -75,7 +75,7 @@ function AdminPage() {
     const handleDeleteUser = async (userId) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
             try {
-                await axios.delete(`http://localhost:2523/api/users/${userId}`);
+                await axios.delete(`https://backend-quiz-app-qpdg.onrender.com/api/users/${userId}`);
                 setUsers(users.filter(user => user._id !== userId));
             } catch (error) {
                 console.error('Error deleting user:', error);

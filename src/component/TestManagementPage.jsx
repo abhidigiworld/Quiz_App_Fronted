@@ -7,7 +7,7 @@ function TestManagementPage() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const response = await axios.get('http://localhost:2523/api/tests');
+                const response = await axios.get('https://backend-quiz-app-qpdg.onrender.com/api/tests');
                 setTests(response.data);
             } catch (error) {
                 console.error('Error fetching tests:', error);
@@ -20,7 +20,7 @@ function TestManagementPage() {
     const handleDeleteTest = async (testId) => {
         if (window.confirm('Are you sure you want to delete this test?')) {
             try {
-                await axios.delete(`http://localhost:2523/api/tests/${testId}`);
+                await axios.delete(`https://backend-quiz-app-qpdg.onrender.com/api/tests/${testId}`);
                 setTests(tests.filter(test => test._id !== testId));
             } catch (error) {
                 console.error('Error deleting test:', error);

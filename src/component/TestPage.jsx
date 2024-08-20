@@ -17,7 +17,7 @@ function TestPage() {
     useEffect(() => {
         const fetchTest = async () => {
             try {
-                const response = await axios.get(`http://localhost:2523/api/test/${testId}`);
+                const response = await axios.get(`https://backend-quiz-app-qpdg.onrender.com/api/test/${testId}`);
                 setTest(response.data);
                 setUserAnswers(new Array(response.data.questions.length).fill(null));
                 setLoading(false);
@@ -95,7 +95,7 @@ function TestPage() {
 
     const handleFinishTest = async () => {
         try {
-            const response = await axios.post(`http://localhost:2523/api/submit-test/${testId}`, {
+            const response = await axios.post(`https://backend-quiz-app-qpdg.onrender.com/api/submit-test/${testId}`, {
                 answers: userAnswers
             });
 

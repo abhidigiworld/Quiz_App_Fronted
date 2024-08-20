@@ -24,7 +24,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:2523/login', {
+      const response = await axios.post('https://backend-quiz-app-qpdg.onrender.com/login', {
         email,
         password,
       });

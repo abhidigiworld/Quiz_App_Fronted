@@ -35,7 +35,7 @@ function SetQuestionPaper() {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post('http://localhost:2523/api/tests', {
+            const response = await axios.post('https://backend-quiz-app-qpdg.onrender.com/api/tests', {
                 testName,
                 questions,
                 expiryTime

@@ -16,7 +16,7 @@ const Signup = () => {
     console.log(name, email, password, confirmPassword);
 
     try {
-      const response = await axios.post('http://localhost:2523/signup', {
+      const response = await axios.post('https://backend-quiz-app-qpdg.onrender.com/signup', {
         name,
         email,
         password,
