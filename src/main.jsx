@@ -35,8 +35,11 @@ const router = createBrowserRouter([
     path: '/student',
     element: <StudentDashboard/>
   },{
-    path: '/test',
+    path: '/test/:testId',
     element: <TestPage/>
+  },{
+    path: '*',
+    element: <h1>Eroor not found</h1>
   }
 ])
 

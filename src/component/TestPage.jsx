@@ -3,10 +3,12 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function TestPage() {
-    const { testId } = useParams(); // Get testId from URL parameters
+    const { testId } = useParams();
     const [test, setTest] = useState(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -14,18 +16,29 @@ function TestPage() {
             try {
                 const response = await axios.get(`http://localhost:2523/api/test/${testId}`);
                 setTest(response.data);
-                setUserAnswers(new Array(response.data.questions.length).fill(null)); // Initialize answers array
+                setUserAnswers(new Array(response.data.questions.length).fill(null));
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching test:', error);
+                setError('Failed to load test.');
+                setLoading(false);
             }
         };
 
         fetchTest();
     }, [testId]);
 
+    if (loading) {
+        return <p>Loading test...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
+
     const handleAnswerSelect = (answerIndex) => {
         const updatedAnswers = [...userAnswers];
-        updatedAnswers[currentQuestionIndex] = answerIndex; // Save the selected answer
+        updatedAnswers[currentQuestionIndex] = answerIndex;
         setUserAnswers(updatedAnswers);
     };
 
@@ -47,16 +60,11 @@ function TestPage() {
                 answers: userAnswers
             });
 
-            // Redirect to results page or display score
             navigate(`/test-result/${testId}`, { state: { score: response.data.score } });
         } catch (error) {
             console.error('Error submitting test:', error);
         }
     };
-
-    if (!test) {
-        return <p>Loading test...</p>;
-    }
 
     return (
         <div className="p-6 bg-gray-50 min-h-screen">

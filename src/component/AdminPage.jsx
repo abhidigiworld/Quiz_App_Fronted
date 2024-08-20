@@ -3,12 +3,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import TestManagementPage from './TestManagementPage';
 
-
 function AdminPage() {
     const [users, setUsers] = useState([]);
     const [editUserId, setEditUserId] = useState(null);
     const [updatedUser, setUpdatedUser] = useState({ name: '', email: '', password: '', userType: '' });
-    const naviaget=useNavigate();
+    const [tests, setTests] = useState([]); // New state for tests
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -18,7 +19,18 @@ function AdminPage() {
                 console.error('Error fetching users:', error);
             }
         };
+
+        const fetchTests = async () => {
+            try {
+                const response = await axios.get('http://localhost:2523/api/tests');
+                setTests(response.data);
+            } catch (error) {
+                console.error('Error fetching tests:', error);
+            }
+        };
+
         fetchUsers();
+        fetchTests();
     }, []);
 
     const handleUpdateUser = (userId) => {
@@ -26,7 +38,7 @@ function AdminPage() {
         setUpdatedUser({
             name: user.name,
             email: user.email,
-            userType: user.userType 
+            userType: user.userType
         });
         setEditUserId(userId);
     };
@@ -49,7 +61,6 @@ function AdminPage() {
         }
     };
 
-
     const handleDeleteUser = async (userId) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
             try {
@@ -70,18 +81,47 @@ function AdminPage() {
     };
 
     const handleSetQuestions = () => {
-        naviaget('/setquestion');
+        navigate('/setquestion');
     };
 
     const handleViewResults = () => {
         console.log('Viewing user results');
     };
 
+    const handleLogout = () => {
+        // Clear JWT token from localStorage or cookies
+        localStorage.removeItem('token'); // Assuming you store the JWT in localStorage
+
+        // Redirect to login page
+        navigate('/login');
+    };
+
+    const handleDeleteTest = async (testId) => {
+        if (window.confirm('Are you sure you want to delete this test?')) {
+            try {
+                await axios.delete(`http://localhost:2523/api/tests/${testId}`);
+                setTests(tests.filter(test => test._id !== testId));
+            } catch (error) {
+                console.error('Error deleting test:', error);
+            }
+        }
+    };
+
     return (
         <div className="p-6 bg-gray-50 min-h-screen">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h1>
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-3xl font-bold text-gray-800">
+                    Admin Dashboard
+                </h1>
+                <button
+                    onClick={handleLogout}
+                    className="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600 transition duration-300"
+                >
+                    Logout
+                </button>
+            </div>
 
-            <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+            <div className="bg-white shadow-md rounded-lg p-6 mb-6 text-left">
                 <h2 className="text-2xl font-semibold text-gray-700 mb-4">All Users</h2>
                 <table className="w-full border-collapse">
                     <thead>
@@ -177,13 +217,40 @@ function AdminPage() {
 
             <div className="bg-white shadow-md rounded-lg p-6 mb-6">
                 <h2 className="text-2xl font-semibold text-gray-700 mb-4">Test Management</h2>
-                <TestManagementPage/>
+                <TestManagementPage />
                 <button
                     onClick={handleSetQuestions}
                     className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300"
                 >
                     Set Test Questions
                 </button>
+            </div>
+
+            <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Manage Tests</h2>
+                <table className="w-full border-collapse">
+                    <thead>
+                        <tr>
+                            <th className="border-b p-3 text-left">Test Name</th>
+                            <th className="border-b p-3 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tests.map(test => (
+                            <tr key={test._id} className="border-b">
+                                <td className="p-3">{test.testName}</td>
+                                <td className="p-3 flex space-x-2">
+                                    <button
+                                        onClick={() => handleDeleteTest(test._id)}
+                                        className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 transition duration-300"
+                                    >
+                                        Delete Test
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
 
             <div className="bg-white shadow-md rounded-lg p-6">
@@ -195,6 +262,7 @@ function AdminPage() {
                     View Results
                 </button>
             </div>
+
         </div>
     );
 }
