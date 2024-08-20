@@ -17,29 +17,48 @@ function TestManagementPage() {
         fetchTests();
     }, []);
 
+    const handleDeleteTest = async (testId) => {
+        if (window.confirm('Are you sure you want to delete this test?')) {
+            try {
+                await axios.delete(`http://localhost:2523/api/tests/${testId}`);
+                setTests(tests.filter(test => test._id !== testId));
+            } catch (error) {
+                console.error('Error deleting test:', error);
+            }
+        }
+    };
+
     return (
-        <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 className="text-2xl font-semibold text-gray-700 mb-4">Test Management</h2>
-           {/* Display the list of tests */}
-            <table className="w-full text-left">
-                <thead>
-                    <tr>
-                        <th className="border-b-2 border-gray-200 p-3 text-gray-700">Test Name</th>
-                        <th className="border-b-2 border-gray-200 p-3 text-gray-700">Expiry Date & Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tests.map(test => (
-                        <tr key={test._id}>
-                            <td className="border-b border-gray-200 p-3">{test.testName}</td>
-                            <td className="border-b border-gray-200 p-3">
-                                {new Date(test.expiryTime).toLocaleString()}
-                            </td>
+        <>
+            <div className="bg-gray-800 shadow-lg rounded-lg p-6 mb-6 text-left">
+                <h2 className="text-2xl font-semibold text-white mb-4">Manage Tests</h2>
+                <table className="w-full border-collapse">
+                    <thead>
+                        <tr>
+                            <th className="border-b border-gray-600 p-3 text-left text-white">Test Name</th>
+                            <th className="border-b border-gray-600 p-3 text-left text-white">Expiry Date & Time</th>
+                            <th className="border-b border-gray-600 p-3 text-left text-white">Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {tests.map(test => (
+                            <tr key={test._id} className="border-b border-gray-600">
+                                <td className="p-3 text-white">{test.testName}</td>
+                                <td className="p-3 text-white">{new Date(test.expiryTime).toLocaleString()}</td>
+                                <td className="p-3 flex space-x-2">
+                                    <button
+                                        onClick={() => handleDeleteTest(test._id)}
+                                        className="bg-purple-600 text-white py-1 px-3 rounded hover:bg-purple-700 transition duration-300"
+                                    >
+                                        Delete Test
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </>
     );
 }
 
