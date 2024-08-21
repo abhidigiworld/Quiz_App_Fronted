@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 function TestPage() {
     const { testId } = useParams();
@@ -95,15 +96,38 @@ function TestPage() {
 
     const handleFinishTest = async () => {
         try {
-            const response = await axios.post(`https://backend-quiz-app-qpdg.onrender.com/api/submit-test/${testId}`, {
-                answers: userAnswers
-            });
-
+            // Retrieve the token from localStorage
+            const token = localStorage.getItem('authToken');
+    
+            if (!token) {
+                throw new Error('No token found. Please log in.');
+            }
+    
+            // Decode the token to get the email
+            const decodedToken = jwtDecode(token);
+            const email = decodedToken.email;
+    
+            // Make the POST request with the token and user answers
+            const response = await axios.post(`http://localhost:2523/api/submittest/${testId}`,
+                {
+                    answers: userAnswers,
+                    email: email 
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Pass the token in the headers
+                    }
+                }
+            );
+    
+            // Navigate to the test result page with the score
             navigate(`/test-result/${testId}`, { state: { score: response.data.score } });
         } catch (error) {
             console.error('Error submitting test:', error);
         }
     };
+    
+
 
     return (
         <>

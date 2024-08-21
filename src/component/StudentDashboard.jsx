@@ -13,6 +13,31 @@ function StudentDashboard() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
+                const response = await axios.get('http://localhost:2523/api/student-testss', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                    }
+                });
+    
+                // Store the attempted tests in state
+                const attemptedTestsData = response.data.map(test => ({
+                    id: test.testId,
+                    name: test.testName,
+                    score: test.score
+                }));
+                setAttemptedTests(attemptedTestsData);
+    
+            } catch (error) {
+                console.error('Error fetching tests:', error);
+            }
+        };
+    
+        fetchTests();
+    }, []);
+    
+      useEffect(() => {
+        const fetchTests = async () => {
+            try {
                 const response = await axios.get('https://backend-quiz-app-qpdg.onrender.com/api/student-tests', {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('authToken')}`
@@ -20,16 +45,15 @@ function StudentDashboard() {
                 });
                 const tests = response.data;
                 const now = new Date();
-
                 setAllTests(tests);
-
-                // Filter attempted tests
-                const attempted = tests.filter(test => test.isAttempted);
-                setAttemptedTests(attempted);
-
                 // Filter expired tests
                 const expired = tests.filter(testItem => new Date(testItem.expiryTime) < now);
                 setExpiredTests(expired);
+
+                const unattemptedTests = tests.filter(testItem => !attemptedTests.includes(testItem.testName));
+                setAllTests(unattemptedTests);
+                console.log(unattemptedTests);
+                
             } catch (error) {
                 console.error('Error fetching tests:', error);
             }
@@ -78,8 +102,9 @@ function StudentDashboard() {
                         {attemptedTests.length > 0 ? (
                             <ul className="space-y-3">
                                 {attemptedTests.map(test => (
-                                    <li key={test._id} className="border-b border-gray-600 pb-2 mb-2">
-                                        <span className="text-gray-100">{test.testName}</span>
+                                    <li key={test.name} className="border-b border-gray-600 pb-2 mb-2">
+                                        <span className="text-gray-100 pr-2">{test.name}</span>
+                                        <span className="text-gray-100"> Score :{test.score}</span>
                                         <span className="ml-4 text-sm text-green-400">Attempted</span>
                                     </li>
                                 ))}

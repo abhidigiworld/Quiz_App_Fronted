@@ -10,6 +10,7 @@ import AdminPage from './component/AdminPage.jsx'
 import SetQuestionPaper from './component/SetQuestionPaper.jsx'
 import StudentDashboard from './component/StudentDashboard.jsx'
 import TestPage from './component/TestPage.jsx'
+import TestResultPage from './component/TestResultPage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,12 @@ const router = createBrowserRouter([
   },{
     path: '/test/:testId',
     element: <TestPage/>
-  },{
+  },
+  {
+    path : '/test-result/:testId',
+    element : <TestResultPage/>
+  },
+  {
     path: '*',
     element: <h1>Eroor not found</h1>
   }
