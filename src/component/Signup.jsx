@@ -13,8 +13,7 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     setError('');
-    console.log(name, email, password, confirmPassword);
-
+  
     try {
       const response = await axios.post('https://backend-quiz-app-qpdg.onrender.com/signup', {
         name,
