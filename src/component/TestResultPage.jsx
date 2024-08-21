@@ -26,7 +26,12 @@ function TestResultPage() {
                     <h2 className="text-3xl font-semibold text-gray-900 mb-4 quicksand-uniqueName">Your Score</h2>
                     <p className="text-gray-900 text-5xl font-bold mb-6 quicksand-uniqueName">{score}</p>
                     <p className="text-gray-700 text-lg quicksand-uniqueName">
-                        You will receive your score via email shortly.
+                    We will send your test results to your email shortly. 
+                    Please keep an eye on your inbox for detailed feedback
+                    and your final score. 
+                    Ensure the email address used is correct and accessible.
+                    If you don't receive the results in a reasonable time,
+                    please reach out to our support team for help.
                     </p>
                 </div>
             </div>
