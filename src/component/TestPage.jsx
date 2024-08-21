@@ -20,6 +20,7 @@ function TestPage() {
             try {
                 const response = await axios.get(`https://backend-quiz-app-qpdg.onrender.com/api/test/${testId}`);
                 setTest(response.data);
+                console.log(response.data);
                 setUserAnswers(new Array(response.data.questions.length).fill(null));
                 setLoading(false);
             } catch (error) {
@@ -147,7 +148,7 @@ function TestPage() {
                         <h2 className="text-2xl font-semibold text-gray-100 mb-4">
                             Question {currentQuestionIndex + 1} of {test.questions.length}
                         </h2>
-                        <p className="text-gray-200 mb-4">{test.questions[currentQuestionIndex].questionText}</p>
+                        <p className="text-gray-200 mb-4">{test.questions[currentQuestionIndex].question}</p>
                         <ul className="space-y-2">
                             {test.questions[currentQuestionIndex].options.map((option, index) => (
                                 <li
