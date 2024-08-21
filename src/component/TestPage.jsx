@@ -15,6 +15,30 @@ function TestPage() {
     const videoRef = useRef(null);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const getMedia = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                setMediaStream(stream);
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                }
+                setPermissionDenied(false);
+            } catch (err) {
+                console.error('Permission denied:', err);
+                setPermissionDenied(true);
+            }
+        };
+
+        getMedia();
+
+        return () => {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+            }
+        };
+    }, [userAnswers]);
+
     function exitFullScreen() {
         if (document.exitFullscreen) {
             document.exitFullscreen();
@@ -89,29 +113,6 @@ function TestPage() {
         fetchTest();
     }, [testId]);
 
-    useEffect(() => {
-        const getMedia = async () => {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                setMediaStream(stream);
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                }
-                setPermissionDenied(false);
-            } catch (err) {
-                console.error('Permission denied:', err);
-                setPermissionDenied(true);
-            }
-        };
-
-        getMedia();
-
-        return () => {
-            if (mediaStream) {
-                mediaStream.getTracks().forEach(track => track.stop());
-            }
-        };
-    }, [userAnswers]);
 
     useEffect(() => {
         const requestFullScreen = () => {
