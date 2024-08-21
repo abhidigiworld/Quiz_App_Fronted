@@ -108,7 +108,7 @@ function TestPage() {
             const email = decodedToken.email;
     
             // Make the POST request with the token and user answers
-            const response = await axios.post(`http://localhost:2523/api/submittest/${testId}`,
+            const response = await axios.post(`https://backend-quiz-app-qpdg.onrender.com/api/submittest/${testId}`,
                 {
                     answers: userAnswers,
                     email: email 

@@ -13,7 +13,7 @@ function StudentDashboard() {
     useEffect(() => {
         const fetchTests = async () => {
             try {
-                const response = await axios.get('http://localhost:2523/api/student-testss', {
+                const response = await axios.get('https://backend-quiz-app-qpdg.onrender.com/api/student-testss', {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('authToken')}`
                     }
