@@ -24,7 +24,7 @@ function TestResultPage() {
                 <h1 className="text-4xl font-bold text-gray-900 mb-8 quicksand-uniqueName">Test Results</h1>
                 <div className="bg-white shadow-lg rounded-lg p-8 max-w-md text-center">
                     <h2 className="text-3xl font-semibold text-gray-900 mb-4 quicksand-uniqueName">Your Score</h2>
-                    <p className="text-gray-900 text-5xl font-bold mb-6 quicksand-uniqueName">{score}</p>
+                    <p className="text-gray-900 text-5xl font-bold mb-6 quicksand-uniqueName animate-bounce">{score}</p>
                     <p className="text-gray-700 text-lg quicksand-uniqueName">
                     We will send your test results to your email shortly. 
                     Please keep an eye on your inbox for detailed feedback

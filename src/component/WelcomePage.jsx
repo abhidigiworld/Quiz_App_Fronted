@@ -17,7 +17,7 @@ const WelcomePage = () => {
       <img
         src="https://png.pngtree.com/png-vector/20230503/ourmid/pngtree-quiz-time-bubble-speech-banner-vector-design-png-image_7078139.png"
         alt="Logo"
-        className="mx-auto w-24 h-24"
+        className="mx-auto w-24 h-24 animate-bounce"
       />
     </div>
 

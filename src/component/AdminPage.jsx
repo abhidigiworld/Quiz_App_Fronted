@@ -153,7 +153,7 @@ function AdminPage() {
                     </div>
                 ) : (
                     <>
-                        <div className="bg-gray-800 shadow-lg rounded-lg p-6 mb-6 overflow-x-auto">
+                        <div className="bg-gray-800 shadow-lg rounded-lg p-6 mb-6 overflow-x-auto scroll-smooth">
                             <h2 className="text-2xl font-semibold text-white mb-4">All Users</h2>
                             <table className="w-full border-collapse">
                                 <thead>
@@ -247,7 +247,7 @@ function AdminPage() {
                             </table>
                         </div>
 
-                        <div className="bg-gray-800 shadow-lg rounded-lg p-6 mb-6 text-right overflow-x-auto">
+                        <div className="bg-gray-800 shadow-lg rounded-lg p-6 mb-6 text-right overflow-x-auto scroll-smooth">
                             <h2 className="text-2xl font-semibold text-white mb-4">Test Management</h2>
                             <div className="bg-gray-800 shadow-lg rounded-lg p-6 mb-6 text-left">
                                 <h2 className="text-2xl font-semibold text-white mb-4">Manage Tests</h2>

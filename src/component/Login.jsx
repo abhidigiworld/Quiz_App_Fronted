@@ -6,18 +6,26 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loadingMessage, setLoadingMessage] = useState('');
   const navigate = useNavigate();
+  const [isSpinning, setIsSpinning] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsSpinning(true); // Start spinning
+    setLoadingMessage('Please wait...'); // Show the loading message
 
     if (!email || !password) {
       setError('Please fill in all fields.');
+      setIsSpinning(false); // Stop spinning
+      setLoadingMessage(''); // Hide the loading message
       return;
     }
 
     if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
       setError('Invalid email address.');
+      setIsSpinning(false); // Stop spinning
+      setLoadingMessage(''); // Hide the loading message
       return;
     }
 
@@ -32,6 +40,9 @@ const Login = () => {
       if (response.status === 200) {
         const { token, user } = response.data;
         localStorage.setItem('authToken', token);
+        setIsSpinning(false); // Stop spinning
+        setLoadingMessage(''); // Hide the loading message
+
         if (user.userType === 'Admin') {
           navigate('/admin');
         } else if (user.userType === 'User') {
@@ -43,8 +54,11 @@ const Login = () => {
       }
     } catch (err) {
       console.error('Error during login:', err);
+      setIsSpinning(false); // Stop spinning
+      setLoadingMessage(''); // Hide the loading message
+
       if (err.response && err.response.status === 400) {
-        setError('Invalid email or passwords.');
+        setError('Invalid email or password.');
       } else {
         setError('An error occurred. Please try again.');
       }
@@ -59,6 +73,11 @@ const Login = () => {
           {error && (
             <div className="bg-red-100 text-red-700 p-2 rounded mb-4">
               {error}
+            </div>
+          )}
+          {loadingMessage && (
+            <div className="bg-blue-100 text-blue-700 p-2 rounded mb-4">
+              {loadingMessage}
             </div>
           )}
           <form onSubmit={handleLogin}>
@@ -82,9 +101,9 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition duration-300"
+              className={`w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition duration-300 ${isSpinning ? 'animate-bounce' : ''}`}
             >
-              Login
+              {isSpinning ? 'Logging in...' : 'Login'}
             </button>
           </form>
           <div className="mt-5 text-center">
@@ -97,7 +116,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-
     </>
   );
 };

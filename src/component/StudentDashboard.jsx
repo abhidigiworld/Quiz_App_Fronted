@@ -97,10 +97,10 @@ function StudentDashboard() {
                 <div className="bg-gray-700 shadow-md rounded-lg p-6 mb-6 animate-slideIn">
                     <h2 className="text-2xl font-semibold text-gray-100 mb-4">Attempted Tests</h2>
                     {loading ? (
-                        <Skeleton count={3} height={40} />
+                        <Skeleton count={3} height={40} className='animate-pulse' />
                     ) : (
                         attemptedTests.length > 0 ? (
-                            <div className="overflow-x-auto">
+                            <div className="overflow-x-auto scroll-smooth">
                                 <table className="w-full table-auto text-left text-gray-100">
                                     <thead className="bg-gray-800">
                                         <tr>
@@ -130,10 +130,10 @@ function StudentDashboard() {
                 <div className="bg-gray-700 shadow-md rounded-lg p-6 mb-6 animate-slideIn">
                     <h2 className="text-2xl font-semibold text-gray-100 mb-4">Expired Tests</h2>
                     {loading ? (
-                        <Skeleton count={3} height={40} />
+                        <Skeleton count={3} height={40} className='animate-pulse' />
                     ) : (
                         expiredTests.length > 0 ? (
-                            <div className="overflow-x-auto">
+                            <div className="overflow-x-auto scroll-smooth">
                                 <table className="w-full table-auto text-left text-gray-100">
                                     <thead className="bg-gray-800">
                                         <tr>
@@ -161,10 +161,10 @@ function StudentDashboard() {
                 <div className="bg-gray-700 shadow-md rounded-lg p-6 animate-slideIn">
                     <h2 className="text-2xl font-semibold text-gray-100 mb-4">Unattempted Tests</h2>
                     {loading ? (
-                        <Skeleton count={3} height={40} />
+                        <Skeleton count={3} height={40}  className='animate-pulse'/>
                     ) : (
                         allTests.length > 0 ? (
-                            <div className="overflow-x-auto">
+                            <div className="overflow-x-auto scroll-smooth">
                                 <table className="w-full table-auto text-left text-gray-100">
                                     <thead className="bg-gray-800">
                                         <tr>
@@ -196,7 +196,7 @@ function StudentDashboard() {
                                 </table>
                             </div>
                         ) : (
-                            <p className="text-gray-400">No tests available.</p>
+                            <p className="text-gray-400 animate-pulse'">No tests available.</p>
                         )
                     )}
                 </div>
